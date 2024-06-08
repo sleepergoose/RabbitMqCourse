@@ -41,5 +41,28 @@ where:
 <br/>
 
 
-## Resources
+## Some notes about RabbitMQ
 
+1. It's always the `PRODUCER` who calls the `EXCHANGE`. The `EXCHANGE` may be considered like a mailbox.
+2. The `EXCHANGE` is bound with FIFO queues via Routing Keys.
+3. On the other side of FIFO queues are Consumers.
+4. Consumers compete for the message. It means that one message is consumed by one only one consumer. In other words: consumers don't get the same message. 
+
+
+## Exchange
+
+There are four types of exchanges, each type means different types of routing policies.
+
+* `Fanout` - when a message is received, it will be forwarded to every queue it is bounded with (the same email is sent to multiple recipients).
+* `Direct` - when a message is received, it will be routed to a queue that has the appropriate routing key (the queue has the same routing key as the message).
+* `Topic` - allows patterns for Routing Key. Patterns contain `*` and `#` special symbols (see docs). 
+* `Headers` - allows set header and `ANY` or `ALL` conditions to route.
+
+## Best practices
+
+1. One connection to RabbitMQ per one microservice. 
+2. Sufficient amount of RAM
+3. Channels are not thread safe. Don't share channnels between threads.
+
+
+## Resources

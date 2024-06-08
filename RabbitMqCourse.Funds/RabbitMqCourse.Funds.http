@@ -1,0 +1,6 @@
+@RabbitMqCourse.Funds_HostAddress = http://localhost:5133
+
+GET {{RabbitMqCourse.Funds_HostAddress}}/
+Accept: application/json
+
+###
