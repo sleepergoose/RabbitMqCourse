@@ -1,3 +1,6 @@
+using RabbitMqCourse.Carts.Services;
+using RabbitMqCourse.Shared;
+
 namespace RabbitMqCourse.Carts;
 
 public class Program
@@ -7,6 +10,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddAuthorization();
+        builder.Services.AddMessaging(builder.Configuration);
+        builder.Services.AddHostedService<MessagingBackgroundService>();
 
         var app = builder.Build();
 

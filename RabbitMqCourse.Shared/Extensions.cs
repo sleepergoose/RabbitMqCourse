@@ -4,6 +4,7 @@ using RabbitMQ.Client;
 using RabbitMqCourse.Shared.Connections;
 using RabbitMqCourse.Shared.Options;
 using RabbitMqCourse.Shared.Publishers;
+using RabbitMqCourse.Shared.Subscribers;
 
 namespace RabbitMqCourse.Shared;
 
@@ -28,6 +29,7 @@ public static class Extensions
         services.AddSingleton<ChannelAccessor>();
         services.AddSingleton<IChannelFactory, ChannelFactory>();
         services.AddSingleton<IMessagePublisher, MessagePublisher>();
+        services.AddSingleton<IMessageSubscriber, MessageSubscriber>();
 
         return services;
     }

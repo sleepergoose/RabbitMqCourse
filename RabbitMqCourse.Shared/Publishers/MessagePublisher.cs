@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace RabbitMqCourse.Shared.Publishers;
 
-internal class MessagePublisher : IMessagePublisher
+internal sealed class MessagePublisher : IMessagePublisher
 {
     private readonly IModel _channel;
     public MessagePublisher(IChannelFactory _factory)
