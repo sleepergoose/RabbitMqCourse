@@ -1,19 +1,25 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMqCourse.Shared.Connections;
+using RabbitMqCourse.Shared.Options;
 using RabbitMqCourse.Shared.Publishers;
 
 namespace RabbitMqCourse.Shared;
 
 public static class Extensions
 {
-    public static IServiceCollection AddMessaging(this IServiceCollection services)
+    public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration)
     {
+        var options = configuration.GetOptions<RabbitMQOptions>("RabbitMQ");
+
         var factory = new ConnectionFactory
         {
-            HostName = "localhost",
-            Password = "",
-            UserName = "",
+            HostName = options.HostName,
+            Port = options.Port,
+            Password = options.Password,
+            UserName = options.UserName,
+            VirtualHost = options.VirtualHost,
         };
 
         var connection = factory.CreateConnection();
@@ -24,5 +30,15 @@ public static class Extensions
         services.AddSingleton<IMessagePublisher, MessagePublisher>();
 
         return services;
+    }
+
+    public static TOptions GetOptions<TOptions>(this IConfiguration configuration, string sectionName)
+        where TOptions : new()
+    {
+        var options = new TOptions();
+        configuration.GetSection(sectionName).Bind(options);
+
+        return options;
+
     }
 }

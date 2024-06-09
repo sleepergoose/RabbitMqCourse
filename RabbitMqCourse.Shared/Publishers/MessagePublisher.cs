@@ -17,7 +17,13 @@ internal class MessagePublisher : IMessagePublisher
         var body = Encoding.UTF8.GetBytes(json);
 
         var properties = _channel.CreateBasicProperties();
-        properties.Headers.Add("MyHeaderKey", "MyHeaderValue");
+
+        properties.Headers = new Dictionary<string, object>()
+        {
+            { "MyHeaderKey", "MyHeaderValue" }
+        };
+
+        _channel.ExchangeDeclare(exchange, "topic", false, false);
 
         _channel.BasicPublish(exchange, routingKey, properties, body);
 

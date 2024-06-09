@@ -24,7 +24,7 @@ docker pull rabbitmq
 Command to run RabbitMQ server in the docker container:
 
 ```
-docker run -d --hostname RabbitMqHostName --name RabbitMqServerName -p 8080:15672 -e RABBITMQ_DEFAULT_USER=adminuser -e RABBITMQ_DEFAULT_PASS=adminpassword123 rabbitmq:3-management
+docker run -d --hostname RabbitMqHostName --name RabbitMqServerName -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=adminuser -e RABBITMQ_DEFAULT_PASS=adminpassword123 rabbitmq:3-management
 ```
 
 where:
@@ -32,7 +32,7 @@ where:
 * `-d` - Run container in background and print container ID.
 * `--hostname RabbitMqHostName`
 * `--name RabbitMqServerName`
-* `-p 8080:15672` - ports numbers (8080 - outer port, 15672 - inner port inside docker container).
+* `-p 15672:15672` - ports numbers (8080 - outer port, 15672 - inner port inside docker container).
 * `-e` - set an environment variable. For example, `RABBITMQ_DEFAULT_USER` and `RABBITMQ_DEFAULT_PASS` are default RabbitMQ environment variables.
 * `-e RABBITMQ_DEFAULT_USER=adminuser` - set an environment variable `RABBITMQ_DEFAULT_USER` with value `adminuser`
 * `-e RABBITMQ_DEFAULT_PASS=adminpassword123` - set an environment variable `RABBITMQ_DEFAULT_PASS` with value `adminpassword123`
