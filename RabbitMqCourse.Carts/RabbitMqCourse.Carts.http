@@ -1,0 +1,6 @@
+@RabbitMqCourse.Carts_HostAddress = http://localhost:5003
+
+GET {{RabbitMqCourse.Carts_HostAddress}}/
+Accept: application/json
+
+###

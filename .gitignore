@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/RabbitMqCourse.Funds/Properties/launchSettings.json
+/RabbitMqCourse.Funds/Properties/launchSettings.json
+/RabbitMqCourse.Carts/Properties/launchSettings.json
