@@ -18,7 +18,13 @@ internal sealed class MessagingBackgroundService : BackgroundService
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _messageSubscriber
-            .SubscribeMessage<FundMessage>("carts-service-funds-message", "FundsMessage", "Funds",
+            .SubscribeMessage<FundMessage>("carts-service-funds-message-words", "Country.#", "Funds",
+            (message, args) =>
+            {
+                _logger.LogInformation($"Received message for customer: {message.CustomerId}, Funds: {message.CurrentFunds}, RoutingKey: {args.RoutingKey}");
+                return Task.CompletedTask;
+            })
+            .SubscribeMessage<FundMessage>("carts-service-funds-message-one-word", "Country.*", "Funds",
             (message, args) =>
             {
                 _logger.LogInformation($"Received message for customer: {message.CustomerId}, Funds: {message.CurrentFunds}, RoutingKey: {args.RoutingKey}");

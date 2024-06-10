@@ -21,10 +21,10 @@ public class Program
 
         app.MapGet("/", () => "Funds Service");
 
-        app.MapGet("/message/send", async (IMessagePublisher messagePublisher) =>
+        app.MapGet("/country/{value}", async (IMessagePublisher messagePublisher, string value) =>
         {
             var message = new FundMessage(123, 10.00m);
-            await messagePublisher.PublishAsync("Funds", "FundsMessage", message);
+            await messagePublisher.PublishAsync("Funds", $"Country.{value}", message);
         });
 
         app.Run();
