@@ -24,7 +24,7 @@ docker pull rabbitmq
 Command to run RabbitMQ server in the docker container:
 
 ```
-docker run -d --hostname RabbitMqHostName --name RabbitMqServerName -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=adminuser -e RABBITMQ_DEFAULT_PASS=adminpassword123 rabbitmq:3-management
+docker run -d --hostname RabbitMqHostName --name RabbitMqServerName -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=username -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management
 ```
 
 where:
@@ -32,10 +32,11 @@ where:
 * `-d` - Run container in background and print container ID.
 * `--hostname RabbitMqHostName`
 * `--name RabbitMqServerName`
-* `-p 15672:15672` - ports numbers (8080 - outer port, 15672 - inner port inside docker container).
+* `-p 5672:5672` - server's port numbers.
+* `-p 15672:15672` - management's port numbers.
 * `-e` - set an environment variable. For example, `RABBITMQ_DEFAULT_USER` and `RABBITMQ_DEFAULT_PASS` are default RabbitMQ environment variables.
-* `-e RABBITMQ_DEFAULT_USER=adminuser` - set an environment variable `RABBITMQ_DEFAULT_USER` with value `adminuser`
-* `-e RABBITMQ_DEFAULT_PASS=adminpassword123` - set an environment variable `RABBITMQ_DEFAULT_PASS` with value `adminpassword123`
+* `-e RABBITMQ_DEFAULT_USER=username` - set an environment variable `RABBITMQ_DEFAULT_USER` with value `username`
+* `-e RABBITMQ_DEFAULT_PASS=password` - set an environment variable `RABBITMQ_DEFAULT_PASS` with value `password`
 * `rabbitmq:3-management` - docker image to run.
 <br/>
 <br/>
@@ -65,4 +66,3 @@ There are four types of exchanges, each type means different types of routing po
 3. Channels are not thread safe. Don't share channnels between threads.
 
 
-## Resources
