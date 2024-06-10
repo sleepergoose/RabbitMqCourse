@@ -15,11 +15,15 @@ internal sealed class MessageSubscriber : IMessageSubscriber
     public IMessageSubscriber SubscribeMessage<TMessage>(string queue, string routingKey, string exchange,
         Func<TMessage, BasicDeliverEventArgs, Task> handle) where TMessage : class, IMessage
     {
-        _channel.ExchangeDeclare(exchange, "topic", false, false);
-        _channel.QueueDeclare(queue, false, false, false);
+        _channel.ExchangeDeclare(exchange: exchange, type: "topic", durable: false, autoDelete: false);
+        _channel.QueueDeclare(queue: queue, durable: false, exclusive: false, autoDelete: false);
         _channel.QueueBind(queue, exchange, routingKey);
 
+        // Specifies how many messages will be consumed at once
+        // _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+
         var consumer = new EventingBasicConsumer(_channel);
+
         consumer.Received += async (model, eventArgs) =>
         {
             // How to get headers if are needed
@@ -32,9 +36,14 @@ internal sealed class MessageSubscriber : IMessageSubscriber
             {
                 await handle(message, eventArgs);
             }
+
+            // Non-acknoledgement (in case of an error, for example):
+            //_channel.BasicNack(deliveryTag: eventArgs.DeliveryTag, multiple: false, requeue: false);
+
+            _channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
         };
 
-        _channel.BasicConsume(queue, true, consumer);
+        _channel.BasicConsume(queue, autoAck: true, consumer);
 
         return this;
     }
