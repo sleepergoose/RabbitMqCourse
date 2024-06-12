@@ -10,7 +10,7 @@ public static class Extensions
     public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
     {
         var postgresOptions = configuration.GetOptions<PostgresOptions>("Postgres")
-            ?? throw new Exception("There is no the ConnectionString");
+            ?? throw new Exception("There is no connection string for PostgreSQL");
         
         var assembly = typeof(CartsDbContext).Assembly.GetName().Name;
 
