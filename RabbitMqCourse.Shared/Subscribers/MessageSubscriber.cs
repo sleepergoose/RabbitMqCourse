@@ -1,5 +1,6 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMqCourse.Shared.Accessors;
 using System.Text;
 using System.Text.Json;
 
@@ -8,9 +9,13 @@ namespace RabbitMqCourse.Shared.Subscribers;
 internal sealed class MessageSubscriber : IMessageSubscriber
 {
     private readonly IModel _channel;
+    private readonly IMessageIdAccessor _messageIdAccessor;
 
-    public MessageSubscriber(IChannelFactory _factory)
-        => _channel = _factory.Create();
+    public MessageSubscriber(IChannelFactory _factory, IMessageIdAccessor messageIdAccessor)
+    {
+        _channel = _factory.Create();
+        _messageIdAccessor = messageIdAccessor;
+    }
 
     public IMessageSubscriber SubscribeMessage<TMessage>(string queue, string routingKey, string exchange,
         Func<TMessage, BasicDeliverEventArgs, Task> handle) where TMessage : class, IMessage
@@ -31,6 +36,8 @@ internal sealed class MessageSubscriber : IMessageSubscriber
 
             var body = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
             var message = JsonSerializer.Deserialize<TMessage>(body);
+
+            _messageIdAccessor.SetMessageId(eventArgs.BasicProperties.MessageId);
 
             if (message is not null)
             {

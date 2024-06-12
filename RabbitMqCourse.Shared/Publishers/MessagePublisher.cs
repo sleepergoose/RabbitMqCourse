@@ -12,7 +12,7 @@ internal sealed class MessagePublisher : IMessagePublisher
         => _channel = _factory.Create();
 
     public async Task PublishAsync<TMessage>(string exchange, string routingKey, TMessage message,
-        Dictionary<string, object>? headers = null) where TMessage : class, IMessage
+        string messageId = default, Dictionary<string, object>? headers = null) where TMessage : class, IMessage
     {
         var json = JsonSerializer.Serialize(message);
         var body = Encoding.UTF8.GetBytes(json);
@@ -20,6 +20,7 @@ internal sealed class MessagePublisher : IMessagePublisher
         var properties = _channel.CreateBasicProperties();
 
         properties.Headers = headers;
+        properties.MessageId = messageId ?? Guid.NewGuid().ToString("N");
 
         // Allows you to create a Task and control its completion manually.
         // It's particularly useful when you're dealing with asynchronous operations that don't naturally produce tasks,

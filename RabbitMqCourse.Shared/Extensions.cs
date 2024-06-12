@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
+using RabbitMqCourse.Shared.Accessors;
 using RabbitMqCourse.Shared.Connections;
 using RabbitMqCourse.Shared.Dispatchers;
 using RabbitMqCourse.Shared.Options;
@@ -32,6 +33,7 @@ public static class Extensions
         services.AddSingleton<IMessagePublisher, MessagePublisher>();
         services.AddSingleton<IMessageSubscriber, MessageSubscriber>();
         services.AddSingleton<IMessageDispatcher, MessageDispatcher>();
+        services.AddSingleton<IMessageIdAccessor, MessageIdAccessor>();
 
         services.Scan(cfg => cfg.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
             .AddClasses(c => c.AssignableTo(typeof(IMessageHandler<>)))
