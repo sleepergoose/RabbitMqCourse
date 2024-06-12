@@ -13,6 +13,7 @@ public class Program
         builder.Services.AddMessaging(builder.Configuration);
         builder.Services.AddHostedService<MessagingBackgroundService>();
         builder.Services.AddDataAccess(builder.Configuration);
+        builder.Services.AddHostedService<AppInitializer>();
 
         var app = builder.Build();
 
