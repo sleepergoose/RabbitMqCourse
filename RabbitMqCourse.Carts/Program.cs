@@ -12,6 +12,7 @@ public class Program
         builder.Services.AddAuthorization();
         builder.Services.AddMessaging(builder.Configuration);
         builder.Services.AddHostedService<MessagingBackgroundService>();
+        builder.Services.AddDataAccess(builder.Configuration);
 
         var app = builder.Build();
 

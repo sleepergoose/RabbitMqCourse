@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMqCourse.Shared.Connections;
+using RabbitMqCourse.Shared.Dispatchers;
 using RabbitMqCourse.Shared.Options;
 using RabbitMqCourse.Shared.Publishers;
 using RabbitMqCourse.Shared.Subscribers;
@@ -30,6 +31,12 @@ public static class Extensions
         services.AddSingleton<IChannelFactory, ChannelFactory>();
         services.AddSingleton<IMessagePublisher, MessagePublisher>();
         services.AddSingleton<IMessageSubscriber, MessageSubscriber>();
+        services.AddSingleton<IMessageDispatcher, MessageDispatcher>();
+
+        services.Scan(cfg => cfg.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
+            .AddClasses(c => c.AssignableTo(typeof(IMessageHandler<>)))
+            .AsMatchingInterface()
+            .WithScopedLifetime());
 
         return services;
     }
