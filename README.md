@@ -64,5 +64,9 @@ There are four types of exchanges, each type means different types of routing po
 1. One connection to RabbitMQ per one microservice. 
 2. Sufficient amount of RAM
 3. Channels are not thread safe. Don't share channnels between threads.
+4. Idempotancy needs to be provided on the consumer. 
+   > Function or method is idempotent if it has the same result no matter how many times it's called or executed. <br/>
+   This needs to protect against accidental duplicate calls that can cause unintended consequences.
+5. Exactly one delivery is impossible. It rather means exactly one processing of the message in the consumer.
 
 

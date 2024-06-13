@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
+using RabbitMqCourse.Shared.Accessors;
 using RabbitMqCourse.Shared.Connections;
+using RabbitMqCourse.Shared.Dispatchers;
 using RabbitMqCourse.Shared.Options;
 using RabbitMqCourse.Shared.Publishers;
 using RabbitMqCourse.Shared.Subscribers;
@@ -10,7 +12,8 @@ namespace RabbitMqCourse.Shared;
 
 public static class Extensions
 {
-    public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration,
+        Action<IMessagingConfiguration> configure = default)
     {
         var options = configuration.GetOptions<RabbitMQOptions>("RabbitMQ");
 
@@ -30,6 +33,15 @@ public static class Extensions
         services.AddSingleton<IChannelFactory, ChannelFactory>();
         services.AddSingleton<IMessagePublisher, MessagePublisher>();
         services.AddSingleton<IMessageSubscriber, MessageSubscriber>();
+        services.AddSingleton<IMessageDispatcher, MessageDispatcher>();
+        services.AddSingleton<IMessageIdAccessor, MessageIdAccessor>();
+
+        services.Scan(cfg => cfg.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
+            .AddClasses(c => c.AssignableTo(typeof(IMessageHandler<>)))
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
+
+        configure?.Invoke(new MessagingConfiguration(services));
 
         return services;
     }

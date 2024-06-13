@@ -6,7 +6,7 @@ internal sealed class ChannelAccessor
 {
     private static readonly ThreadLocal<ChannelHolder> _holder = new();
 
-    public IModel? Channnel
+    public IModel Channnel
     {
         get
         {
@@ -30,7 +30,7 @@ internal sealed class ChannelAccessor
 
     private class ChannelHolder
     {
-        public IModel? Context;
+        public IModel Context;
     }
 }
 
