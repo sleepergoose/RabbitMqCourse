@@ -5,12 +5,12 @@ namespace RabbitMqCourse.Shared.Deduplication;
 
 public static class Extensions
 {
-    public static IServiceCollection AddDeduplication<TContext>(this IServiceCollection services)
+    public static IMessagingConfiguration AddDeduplication<TContext>(this IMessagingConfiguration configure)
         where TContext : DbContext
     {
-        services.TryDecorate(typeof(IMessageHandler<>), typeof(DeduplicationMessageHandlerDecorator<>));
-        services.AddScoped<Func<DbContext>>(sp => sp.GetRequiredService<TContext>);
+        configure.Services.TryDecorate(typeof(IMessageHandler<>), typeof(DeduplicationMessageHandlerDecorator<>));
+        configure.Services.AddScoped<Func<DbContext>>(sp => sp.GetRequiredService<TContext>);
 
-        return services;
+        return configure;
     }
 }

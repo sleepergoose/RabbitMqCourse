@@ -12,7 +12,8 @@ namespace RabbitMqCourse.Shared;
 
 public static class Extensions
 {
-    public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration,
+        Action<IMessagingConfiguration> configure = default)
     {
         var options = configuration.GetOptions<RabbitMQOptions>("RabbitMQ");
 
@@ -39,6 +40,8 @@ public static class Extensions
             .AddClasses(c => c.AssignableTo(typeof(IMessageHandler<>)))
             .AsMatchingInterface()
             .WithScopedLifetime());
+
+        configure?.Invoke(new MessagingConfiguration(services));
 
         return services;
     }
