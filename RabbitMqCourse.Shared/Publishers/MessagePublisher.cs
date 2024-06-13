@@ -12,7 +12,7 @@ internal sealed class MessagePublisher : IMessagePublisher
         => _channel = _factory.Create();
 
     public async Task PublishAsync<TMessage>(string exchange, string routingKey, TMessage message,
-        string messageId = default, Dictionary<string, object>? headers = null) where TMessage : class, IMessage
+        string messageId = default, Dictionary<string, object> headers = null) where TMessage : class, IMessage
     {
         var json = JsonSerializer.Serialize(message);
         var body = Encoding.UTF8.GetBytes(json);

@@ -12,7 +12,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddAuthorization();
-        builder.Services.AddMessaging(builder.Configuration, c => c.AddDeduplication<CartsDbContext>());
+        builder.Services.AddMessaging(builder.Configuration,
+            c => c.AddDeduplication<CartsDbContext>(builder.Configuration));
         builder.Services.AddHostedService<MessagingBackgroundService>();
         builder.Services.AddDataAccess(builder.Configuration);
         builder.Services.AddHostedService<AppInitializer>();
