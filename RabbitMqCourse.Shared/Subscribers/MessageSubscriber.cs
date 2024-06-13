@@ -50,7 +50,7 @@ internal sealed class MessageSubscriber : IMessageSubscriber
             _channel.BasicAck(deliveryTag: eventArgs.DeliveryTag, multiple: false);
         };
 
-        _channel.BasicConsume(queue, autoAck: true, consumer);
+        _channel.BasicConsume(queue, autoAck: false, consumer);
 
         return this;
     }

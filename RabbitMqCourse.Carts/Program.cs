@@ -11,18 +11,15 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddAuthorization();
         builder.Services.AddMessaging(builder.Configuration,
             c => c.AddDeduplication<CartsDbContext>(builder.Configuration));
-        builder.Services.AddHostedService<MessagingBackgroundService>();
         builder.Services.AddDataAccess(builder.Configuration);
+        builder.Services.AddHostedService<MessagingBackgroundService>();
         builder.Services.AddHostedService<AppInitializer>();
 
         var app = builder.Build();
 
         app.UseHttpsRedirection();
-
-        app.UseAuthorization();
 
         app.MapGet("/", () => "Carts Service");
 

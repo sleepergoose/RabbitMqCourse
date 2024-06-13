@@ -1,6 +1,6 @@
 ﻿namespace RabbitMqCourse.Shared.Dispatchers;
 
-internal interface IMessageDispatcher
+public interface IMessageDispatcher
 {
     Task DispatchAsync<TMessage>(TMessage message) where TMessage : class, IMessage;
 }

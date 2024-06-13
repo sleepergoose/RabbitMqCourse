@@ -38,7 +38,7 @@ public static class Extensions
 
         services.Scan(cfg => cfg.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
             .AddClasses(c => c.AssignableTo(typeof(IMessageHandler<>)))
-            .AsMatchingInterface()
+            .AsImplementedInterfaces()
             .WithScopedLifetime());
 
         configure?.Invoke(new MessagingConfiguration(services));

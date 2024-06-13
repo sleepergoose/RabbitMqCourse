@@ -39,7 +39,10 @@ internal sealed class MessagePublisher : IMessagePublisher
 
             // manually complete the task by calling methods like SetResult, SetException, or SetCanceled
             // on the TaskCompletionSource instance.
-            tcs.SetResult();
+            if (!tcs.Task.IsCompleted)
+            {
+                tcs.SetResult();
+            }
         };
 
         
